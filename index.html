@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Broughlike 1</title>
+
+  <style>
+    canvas {
+      background-color: #333333;
+      outline: 3px solid black;
+    }
+
+    body {
+      background-color: #eeeeee;
+      text-align: center;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas></canvas>
+  <script src="JS/game.js"></script>
+  <script src="JS/map.js"></script>
+  <script src="JS/monster.js"></script>
+  <script src="JS/spell.js"></script>
+  <script src="JS/tile.js"></script>
+  <script src="JS/utility.js"></script>
+
+  <script>
+    tileSize = 64;
+    numTiles = 9;
+    UIWidth = 4;
+    mapLevel = 1;
+    maxHp = 5;
+
+    spritesheet.onload = showTitle;
+
+    gameState = "loading";
+
+    startingHp = 5;
+    numLevels = 10;
+
+    shakeAmount = 0;
+    shakeX = 0;
+    shakeY = 0;
+    
+
+    setupCanvas();
+
+    initSounds();
+  </script>
+  
+</body>
+</html>
