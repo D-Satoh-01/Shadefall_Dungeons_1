@@ -21,35 +21,45 @@
 
 <body>
   <canvas></canvas>
-  <script src="JS/game.js"></script>
+
+  <script>
+    tileSize = 32;
+    numTiles = 21;
+    UIWidth = 8;
+    areas = {};
+    areaXYZ = {};
+    
+  </script>
+
+  
+  <script src="JS/tile.js"></script>
   <script src="JS/map.js"></script>
   <script src="JS/monster.js"></script>
-  <script src="JS/spell.js"></script>
-  <script src="JS/tile.js"></script>
+  <script src="JS/game.js"></script>
   <script src="JS/utility.js"></script>
 
   <script>
-    tileSize = 64;
-    numTiles = 9;
-    UIWidth = 4;
-    mapLevel = 1;
-    maxHp = 5;
-
-    spritesheet.onload = showTitle;
-
     gameState = "loading";
-
     startingHp = 5;
-    numLevels = 10;
-
-    shakeAmount = 0;
-    shakeX = 0;
-    shakeY = 0;
-    
+    money = 0;
 
     setupCanvas();
 
-    initSounds();
+    gameState = "running";
+
+    generateDirtArea_1_1();
+
+    setTimeout(function() {
+      areas[areaXYZ] = tiles;;
+    }, 1000);
+
+    player = new Player(tiles[10][10]);
+
+    generateNearbyAreas();
+
+    generateDirtArea_1_1();
+
+    update();
   </script>
   
 </body>

@@ -1,3 +1,4 @@
+// tile.js ------------------------------------------------------------
 class Tile {
   constructor(x, y, sprite, passable){
     this.x = x;
@@ -36,11 +37,10 @@ class Tile {
     return this.getAdjacentNeighbors().filter(t => t.passable);
   }
 
-  // 隔離されず隣接している全てのタイルを検出する
   getConnectedTiles(){
     let connectedTiles = [this];
     let frontier = [this];
-    while (frontier.length){
+    while(frontier.length){
       let neighbors = frontier.pop().getAdjacentPassableNeighbors().filter(t => !connectedTiles.includes(t));
       connectedTiles = connectedTiles.concat(neighbors);
       frontier = frontier.concat(neighbors);
@@ -50,41 +50,32 @@ class Tile {
 
   draw(){
     drawSprite(this.sprite, this.x, this.y);
-
-    if (this.tresure){
-      drawSprite(15, this.x, this.y);
-    }
-
-    if (this.effectCounter){
-      this.effectCounter --;
-      ctx.globalAlpha = this.effectCounter / 50;
-      drawSprite(this.effect, this.x, this.y);
-      ctx.globalAlpha = 1;
-    }
   }
 
-  setEffect(effectSprite){
-    this.effect = effectSprite;
-    this.effectCounter = 50;
+  stepOn(monster){
+    if (monster.isPlayer && this.gold){
+      money += 1;
+      this.gold = false;
+    }
   }
 }
 
-class Floor extends Tile{
+class DirtFloor extends Tile{
+  constructor(x, y){
+    super(x, y, 33, true);
+  };
+}
+
+class DirtGrassFloor extends Tile{
+  constructor(x, y){
+    super(x, y, 12, true);
+  };
+}
+
+class RockFloor extends Tile{
   constructor(x, y){
     super(x, y, 30, true);
   };
-
-  stepOn(monster){
-    if (monster.isPlayer && this.tresure){
-      score ++;
-      if (score % 3 == 0 && numSpells < 9){
-        numSpells ++;
-        player.addSpell();
-      }
-      this.tresure = false;
-      spawnMonster();
-    }
-  }
 }
 
 class Wall extends Tile{
@@ -93,21 +84,25 @@ class Wall extends Tile{
   }
 }
 
-class Exit extends Tile{
+class StairsDown extends Tile{
   constructor(x, y){
     super(x, y, 16, true);
+  }
+  stepOn(monster){
+    if (monster.isPlayer){
+      player.currentAreaZ -= 1;
+    }
+  }
+}
+
+class StairsUp extends Tile{
+  constructor(x, y){
+    super(x, y, 13, true);
   }
 
   stepOn(monster){
     if (monster.isPlayer){
-      playSound("newLevel");
-      if (level == numLevels){
-        addScore(score, true);
-        showTitle();
-      } else {
-        level ++;
-        startLevel(Math.min(maxHp, player.hp+1));
-      }
+      player.currentAreaZ += 1;
     }
   }
 }
